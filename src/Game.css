@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+.game {
+    width: 30vw;
+}
+
+.numberinput {
+    display: flex;
+    gap: 10px;
+}
+
+.numberinput button {
+    padding: 0.2em;
+    width: 100%;
+    background-color: lch(31.46% 0 296.81);
+}
+
+@theme {
+    --animate-wiggle: wiggle 0.2s ease-in-out 2;
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: translateX(0px);
+    }
+    25% {
+      transform: translateX(2.5px);
+    }
+    75% {
+        transform: translateX(-2.5px);
+    }
+  }
+}
