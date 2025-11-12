@@ -28,13 +28,6 @@ const Game: Component = () => {
         digits: [3, 1, 4],
         numDigits: 0,
     })
-    const digitsString = createMemo(() => {
-        let first_few = state.digits.slice(1, 10).join("")
-
-        let rest = "..." + state.digits.slice(10).slice(-30).join("")
-        
-        return state.digits.at(0) + "." + first_few + ((state.digits.length > 10)?rest:"")
-    })
 
     const digitCache = new DigitCache()
 
@@ -66,25 +59,67 @@ const Game: Component = () => {
         )
     }
 
+    const [tickTimer, setTickTimer] = createSignal<NodeJS.Timer | undefined>()
+    const setRunning = (isRunning: boolean) => {
+        if (isRunning) {
+            setTickTimer(setInterval(() => {
+                digitsBatched(11)
+            }, 10))
+        } else {
+            clearInterval(tickTimer())
+            setTickTimer(undefined)
+        }
+    }
+
   return (
     <div class="flex items-center flex-col font-mono">
-        <h1 class="text-4xl text-center py-20">{digitsString()}</h1>
+        <PiDisplay state={state}></PiDisplay>
             
-        <h1>{state.numDigits}</h1>
 
         <button onclick={() => digitsBatched(10)}>+10</button>
 
-        <button onclick={() => 
-        setInterval(() => {
-            digitsBatched(11)
-        }, 10)}>Run</button>
+        <div class="flex gap-1.5">
+            <input type="checkbox" checked={tickTimer() !== undefined} onchange={(e) => setRunning(e.currentTarget.checked)}/> 
+            <label>Run</label>
+        </div>
 
         <NumberInput addDigit={addDigit} />
     </div>
   );
 };
 
-function NumberInput(props) {
+function PiDisplay(props: {state: {digits: number[], numDigits: number}}) {
+    let restElement!: HTMLSpanElement;
+
+    const cutoffPoint = 6
+
+    const firstDigits = createMemo(() => {
+        let first_few = props.state.digits.slice(1, cutoffPoint).join("")
+        
+        return props.state.digits.at(0) + "." + first_few
+    })
+
+    const lastDigits = createMemo(() => {
+        if (restElement != undefined && restElement.scrollWidth > restElement.clientWidth) {
+            // Has been clipped
+            return props.state.digits.slice(cutoffPoint).slice(-100).join("")
+        }
+        return props.state.digits.slice(cutoffPoint).join("")
+    })
+
+    return (
+        <div class="flex flex-col items-center py-20">
+            <div class="text-4xl py-2 max-w-lg flex">
+                <span class="block">{firstDigits()}</span>
+                <span ref={restElement} dir="rtl" class="text-ellipsis overflow-hidden block max-w-full">{lastDigits()}</span>
+            </div>
+                
+            <h1>{props.state.numDigits} digits</h1>
+        </div>
+    )
+}
+
+function NumberInput(props: {addDigit: Function}) {
 
     let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
