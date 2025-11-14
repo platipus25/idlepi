@@ -62,11 +62,13 @@ const Game: Component = () => {
     }
 
   return (
-    <div class="grid grid-cols-3 font-mono gap-10 p-2">
+    <div class="grid lg:grid-cols-3 font-mono gap-10 p-2">
 
-        <UpgradesPanel upgrades={state.upgrades} numDigits={state.numDigits}></UpgradesPanel>
+        <div class="lg:order-0 order-1">
+            <UpgradesPanel upgrades={state.upgrades} numDigits={state.numDigits}></UpgradesPanel>
+        </div>
 
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center min-w-0">
             <PiDisplay state={state}></PiDisplay>
 
             <button onclick={() => digitsBatched(10)}>+10</button>
