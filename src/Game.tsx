@@ -1,32 +1,22 @@
-import { Component, createSignal, createMemo, For, createEffect } from 'solid-js';
+import { Component, createSignal, createMemo, For, Show, createEffect } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { Motion, createMotion } from 'solid-motionone';
 import "./Game.css"
-import {rabinowitz_wagon_streaming, gosper_series_streaming} from "./spigot_algorithm"
+import UpgradesPanel from './UpgradesPanel';
+import { Upgrade } from './UpgradesPanel';
+import MonteCarlo from './MonteCarlo';
+import DigitCache from "./digit_cache";
 
-class DigitCache {
-    pi_generator: Generator<[number, bigint]>
-    cached_digits: number[] = []
-
-    constructor() {
-        this.pi_generator = gosper_series_streaming()
-    }
-
-    calculateToDigit(place: number) {
-        while (this.cached_digits.length <= place) {
-            let {value, done} = this.pi_generator.next()
-            let [index, digit] = value
-            //console.assert(this.cached_digits.length == index, "generator and cache should be in sync")
-            this.cached_digits.push(digit)
-        }
-        return this.cached_digits.at(place)
-    }
+type GameState = {
+    digits: number[], numDigits: number, upgrades: Upgrade[]
 }
 
+
 const Game: Component = () => {
-    const [state, setState] = createStore({
+    const [state, setState] = createStore<GameState>({
         digits: [3, 1, 4],
         numDigits: 0,
+        upgrades: [],
     })
 
     const digitCache = new DigitCache()
@@ -72,18 +62,33 @@ const Game: Component = () => {
     }
 
   return (
-    <div class="flex items-center flex-col font-mono">
-        <PiDisplay state={state}></PiDisplay>
-            
+    <div class="grid grid-cols-3 font-mono gap-10 p-2">
 
-        <button onclick={() => digitsBatched(10)}>+10</button>
+        <UpgradesPanel upgrades={state.upgrades} numDigits={state.numDigits}></UpgradesPanel>
 
-        <div class="flex gap-1.5">
-            <input type="checkbox" checked={tickTimer() !== undefined} onchange={(e) => setRunning(e.currentTarget.checked)}/> 
-            <label>Run</label>
+        <div class="flex flex-col items-center">
+            <PiDisplay state={state}></PiDisplay>
+
+            <button onclick={() => digitsBatched(10)}>+10</button>
+
+            <div class="flex gap-1.5">
+                <input type="checkbox" checked={tickTimer() !== undefined} onchange={(e) => setRunning(e.currentTarget.checked)}/> 
+                <label>Run</label>
+            </div>
+
+            <NumberInput addDigit={addDigit} />
         </div>
 
-        <NumberInput addDigit={addDigit} />
+        <div>
+            <For each={state.upgrades}>
+                {
+                    (upgrade, index) => <Show when={upgrade.active}>
+                        {upgrade.component}
+                    </Show>
+                }
+            </For>
+            {/*<MonteCarlo digitCache={digitCache}></MonteCarlo>*/}
+        </div>
     </div>
   );
 };
@@ -108,10 +113,10 @@ function PiDisplay(props: {state: {digits: number[], numDigits: number}}) {
     })
 
     return (
-        <div class="flex flex-col items-center py-20">
-            <div class="text-4xl py-2 max-w-lg flex">
+        <div class="flex flex-col items-center py-20 max-w-full">
+            <div class="text-4xl py-2 max-w-full flex">
                 <span class="block">{firstDigits()}</span>
-                <span ref={restElement} dir="rtl" class="text-ellipsis overflow-hidden block max-w-full">{lastDigits()}</span>
+                <span ref={restElement} dir="rtl" class="text-ellipsis overflow-hidden block whitespace-nowrap">{lastDigits()}</span>
             </div>
                 
             <h1>{props.state.numDigits} digits</h1>
@@ -137,7 +142,7 @@ function NumberInput(props: {addDigit: Function}) {
         <For each={numbers}>
             {
                 (item, index) => 
-                    <button class="bg-gray-300 p-1 aspect-square w-full" onclick={() => props.addDigit(item, badDigit)}>
+                    <button class="bg-gray-300 p-1 aspect-square" onclick={() => props.addDigit(item, badDigit)}>
                         {item}
                     </button>
                 

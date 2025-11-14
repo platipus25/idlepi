@@ -56,7 +56,7 @@ function *rabinowitz_wagon_streaming(): Generator<[number, bigint]> {
 }
 
 // Also from that same paper
-function *gosper_series_streaming(): Generator<[number, bigint]> {
+function *gosper_series_streaming(): Generator<[number, bigint], void> {
     let [q, r, t, i] = [1n, 180n, 60n, 2n];
 
     while (true) {
@@ -73,7 +73,7 @@ function *gosper_series_streaming(): Generator<[number, bigint]> {
     }
 }
 
-function g(q, r, t, i) {
+function g(q: bigint, r: bigint, t: bigint, i: bigint): bigint[] {
     let u = 3n*(3n*i+1n)*(3n*i+2n);
     let y = (q*(27n*i-12n)+5n*r) / (5n*t)
 
