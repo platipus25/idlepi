@@ -63,7 +63,7 @@ const UpgradesPanel: Component<UpgradesPanelProps> = (props) => {
             unlocked() {
                 return props.numDigits >= 1000
             },
-            active: true,
+            active: false,
             component: SpigotAlgorithm,
         },
         {
@@ -72,7 +72,7 @@ const UpgradesPanel: Component<UpgradesPanelProps> = (props) => {
             unlocked() {
                 return props.numDigits >= 10_000
             },
-            active: true,
+            active: false,
             component: RamanujanSeries,
         },
         {
@@ -81,7 +81,7 @@ const UpgradesPanel: Component<UpgradesPanelProps> = (props) => {
             unlocked() {
                 return props.numDigits >= 10_000
             },
-            active: true,
+            active: false,
             component: BinarySplitting,
         }
     ]))
