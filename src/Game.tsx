@@ -7,6 +7,8 @@ import { Upgrade } from './UpgradesPanel';
 import MonteCarlo from './MonteCarlo';
 import DigitCache from "./digit_cache";
 
+import Ticker from './Ticker';
+
 type GameState = {
     digits: number[], numDigits: number, upgrades: Upgrade[]
 }
@@ -67,18 +69,6 @@ const Game: Component = () => {
         )
     }
 
-    const [tickTimer, setTickTimer] = createSignal<NodeJS.Timer | undefined>()
-    const setRunning = (isRunning: boolean) => {
-        if (isRunning) {
-            setTickTimer(setInterval(() => {
-                digitsBatched(11)
-            }, 10))
-        } else {
-            clearInterval(tickTimer())
-            setTickTimer(undefined)
-        }
-    }
-
   return (
     <div class="grid lg:grid-cols-3 font-mono gap-10 p-2">
 
@@ -91,10 +81,7 @@ const Game: Component = () => {
 
             <button onclick={() => digitsBatched(10)}>+10</button>
 
-            <div class="flex gap-1.5">
-                <input type="checkbox" checked={tickTimer() !== undefined} onchange={(e) => setRunning(e.currentTarget.checked)}/> 
-                <label>Run</label>
-            </div>
+            <Ticker tick={() => digitsBatched(11)}></Ticker>
 
             <NumberInput addDigit={addDigit} />
         </div>
