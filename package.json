@@ -6,7 +6,7 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "vite build",
+    "build": "wasm-pack build picalculation && vite build",
     "serve": "vite preview"
   },
   "license": "MIT",
@@ -17,7 +17,8 @@
     "typescript": "^5.9.2",
     "vite": "^7.1.4",
     "vite-plugin-solid": "^2.11.8",
-    "vite-plugin-wasm": "^3.5.0"
+    "vite-plugin-wasm": "^3.5.0",
+    "wasm-pack": "^0.13.1"
   },
   "dependencies": {
     "katex": "^0.16.25",
