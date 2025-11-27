@@ -2,12 +2,12 @@ type Point = [number, number]
 
 // First quadrant of the unit circle
 class CircleSimulation {
-    points: Point[] = []
     inside: number = 0
     outside: number = 0
+    radius: number
 
     constructor() {
-
+        this.radius = 1
     }
 
     get total() {
@@ -23,15 +23,13 @@ class CircleSimulation {
     }
 
     addPoint() {
-        let point: Point = [Math.random(), Math.random()]
+        let point: Point = [this.radius * Math.random(), this.radius* Math.random()]
 
-        if (point[0]**2 + point[1]**2 <= 1) {
+        if (point[0]**2 + point[1]**2 <= this.radius**2) {
             this.inside++;
         } else {
             this.outside++;
         }
-
-        //this.points.push(point)
     }
 }
 

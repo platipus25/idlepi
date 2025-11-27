@@ -4,7 +4,6 @@ import { Motion, createMotion } from 'solid-motionone';
 import "./Game.css"
 import UpgradesPanel from './UpgradesPanel';
 import { Upgrade } from './UpgradesPanel';
-import MonteCarlo from './MonteCarlo';
 import DigitCache from "./digit_cache";
 
 import Ticker from './Ticker';
