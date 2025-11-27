@@ -10,7 +10,10 @@ import DigitCache from "./digit_cache";
 import Ticker from './Ticker';
 
 type GameState = {
-    digits: number[], numDigits: number, upgrades: Upgrade[]
+    digits: number[],
+    numDigits: number, 
+    digitRate: number,
+    upgrades: Upgrade<any>[],
 }
 
 
@@ -18,13 +21,27 @@ const Game: Component = () => {
     const [state, setState] = createStore<GameState>({
         digits: [3, 1, 4],
         numDigits: 0,
+        digitRate: 0,
         upgrades: [],
     })
 
     const digitCache = new DigitCache()
 
+    let digitTimingFilter: [DOMHighResTimeStamp, number][] = []
+
     createEffect(() => {
-        setState("numDigits", state.digits.length)
+        const now = performance.now()
+        digitTimingFilter.push([now, state.digits.length])
+        digitTimingFilter = digitTimingFilter.filter(([t, _]) => Math.abs(t - now) < 3000)
+        let end = digitTimingFilter.at(-1)
+        let start = digitTimingFilter.at(0)
+        let slope = 0;
+        if (start !== undefined && end !== undefined) {
+            console.log(start, end)
+            slope = (start[1] - end[1]) / (start[0] - end[0]) || 0
+        }
+        console.log(digitTimingFilter.length)
+        setState({digitRate: slope, numDigits: state.digits.length})
     })
     
     const addDigit = (digit: number, badDigit: Function) => {
@@ -78,6 +95,8 @@ const Game: Component = () => {
 
         <div class="flex flex-col items-center min-w-0">
             <PiDisplay state={state}></PiDisplay>
+
+            <span>{(state.digitRate * 1000).toFixed(2)} digits/second</span>
 
             <button onclick={() => digitsBatched(10)}>+10</button>
 
