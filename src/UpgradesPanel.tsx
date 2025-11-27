@@ -3,6 +3,7 @@ import { createStore } from 'solid-js/store';
 import MonteCarlo from './widgets/MonteCarlo';
 import RamanujanSeries from './widgets/RamanujanSeries';
 import SpigotAlgorithm from './widgets/SpigotAlgorithm';
+import BinarySplitting from './widgets/BinarySplitting';
 
 type WidgetProps = {
     addDigits: (newDigits: number[], startIndex: number) => void,
@@ -74,6 +75,15 @@ const UpgradesPanel: Component<UpgradesPanelProps> = (props) => {
             active: true,
             component: RamanujanSeries,
         },
+        {
+            name: "Binary Splitting Chudnovsky Series",
+            cost: 50_000,
+            unlocked() {
+                return props.numDigits >= 10_000
+            },
+            active: true,
+            component: BinarySplitting,
+        }
     ]))
 
     createEffect(() => 
