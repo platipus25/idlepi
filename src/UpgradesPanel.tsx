@@ -1,6 +1,7 @@
 import { Component, createEffect, createSignal, Index, useContext, Switch, Match, onMount } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import MonteCarlo from './widgets/MonteCarlo';
+import RamanujanSeries from './widgets/RamanujanSeries';
 
 type WidgetProps = {
     addDigits: (newDigits: number[], startIndex: number) => void,
@@ -55,14 +56,14 @@ const UpgradesPanel: Component<UpgradesPanelProps> = (props) => {
             component: () => <></>
         },
         {
-            name: "Spigot Algorithm",
-            cost: 100_000,
+            name: "Ramanujan Series",
+            cost: 50_000,
             unlocked() {
-                return props.numDigits > 1000
+                return props.numDigits >= 10_000
             },
-            active: false,
-            component: () => <></>,
-        }
+            active: true,
+            component: RamanujanSeries,
+        },
     ]))
 
     createEffect(() => 
