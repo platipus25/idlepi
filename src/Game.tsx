@@ -168,7 +168,7 @@ function NumberInput(props: {addDigit: Function}) {
         <For each={numbers}>
             {
                 (item, index) => 
-                    <button class="bg-gray-300 p-1 aspect-square" onclick={() => props.addDigit(item, badDigit)}>
+                    <button class="btn aspect-square" onclick={() => props.addDigit(item, badDigit)}>
                         {item}
                     </button>
                 

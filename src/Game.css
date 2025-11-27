@@ -15,6 +15,10 @@
     background-color: lch(31.46% 0 296.81);
 }
 
+.btn {
+  @apply p-1 bg-gray-200 active:bg-gray-300 rounded
+}
+
 @theme {
     --animate-wiggle: wiggle 0.2s ease-in-out 2;
   @keyframes wiggle {
