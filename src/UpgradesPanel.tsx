@@ -2,6 +2,7 @@ import { Component, createEffect, createSignal, Index, useContext, Switch, Match
 import { createStore } from 'solid-js/store';
 import MonteCarlo from './widgets/MonteCarlo';
 import RamanujanSeries from './widgets/RamanujanSeries';
+import SpigotAlgorithm from './widgets/SpigotAlgorithm';
 
 type WidgetProps = {
     addDigits: (newDigits: number[], startIndex: number) => void,
@@ -54,6 +55,15 @@ const UpgradesPanel: Component<UpgradesPanelProps> = (props) => {
             unlocked() { return props.numDigits > 100 },
             active: false,
             component: () => <></>
+        },
+        {
+            name: "Gosper's Series with Spigot Algorithm",
+            cost: 10_000,
+            unlocked() {
+                return props.numDigits >= 1000
+            },
+            active: true,
+            component: SpigotAlgorithm,
         },
         {
             name: "Ramanujan Series",

@@ -20,6 +20,7 @@
     "vite-plugin-wasm": "^3.5.0"
   },
   "dependencies": {
+    "katex": "^0.16.25",
     "solid-js": "^1.9.9",
     "solid-motionone": "^1.0.4"
   }
