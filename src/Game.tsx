@@ -35,6 +35,24 @@ const Game: Component = () => {
         }
     }
 
+    const addDigitsUnchecked = (newDigits: number[], startIndex: number) => {
+        // We don't check the validity of the digits
+
+        if (startIndex > newDigits.length + 1) {
+            throw new Error("can't add these digits because it would leave a gap")
+        }
+
+        setState(
+            "digits",
+            (digits) => {
+                return [
+                ...digits,
+                ...newDigits.slice(digits.length - startIndex)
+            ]
+            }
+        )
+    }
+
     const digitsBatched = (num: number) => {
         const start = state.digits.length
         const end = start + num;
@@ -65,7 +83,7 @@ const Game: Component = () => {
     <div class="grid lg:grid-cols-3 font-mono gap-10 p-2">
 
         <div class="lg:order-0 order-1">
-            <UpgradesPanel upgrades={state.upgrades} numDigits={state.numDigits}></UpgradesPanel>
+            <UpgradesPanel addDigits={addDigitsUnchecked} upgrades={state.upgrades} numDigits={state.numDigits}></UpgradesPanel>
         </div>
 
         <div class="flex flex-col items-center min-w-0">
@@ -81,11 +99,11 @@ const Game: Component = () => {
             <NumberInput addDigit={addDigit} />
         </div>
 
-        <div>
+        <div class="flex flex-col gap-2">
             <For each={state.upgrades}>
                 {
-                    (upgrade, index) => <Show when={upgrade.active}>
-                        {upgrade.component}
+                    (upgrade: Upgrade<any>, index) => <Show when={upgrade.active}>
+                        {upgrade.component({ addDigits: addDigitsUnchecked })}
                     </Show>
                 }
             </For>
