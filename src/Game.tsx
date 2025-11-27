@@ -105,7 +105,8 @@ const Game: Component = () => {
         </div>
 
         <div class="flex flex-col gap-2">
-            <For each={state.upgrades}>
+            <h1 class="self-center text-lg py-1">Algorithms</h1>
+            <For each={state.upgrades.filter((u) => u.active)} fallback={<span class="self-center">Buy some in the shop!</span>}>
                 {
                     (upgrade: Upgrade<any>, index) => <Show when={upgrade.active}>
                         {upgrade.component({ addDigits: addDigitsUnchecked })}
