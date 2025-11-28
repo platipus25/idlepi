@@ -4,9 +4,10 @@
   "description": "",
   "type": "module",
   "scripts": {
+    "wasm": "wasm-pack build picalculation",
     "start": "vite",
     "dev": "vite",
-    "build": "wasm-pack build picalculation && vite build",
+    "build": "vite build",
     "serve": "vite preview"
   },
   "license": "MIT",
