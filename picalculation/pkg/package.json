@@ -1,0 +1,17 @@
+{
+  "name": "picalculation",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "picalculation_bg.wasm",
+    "picalculation.js",
+    "picalculation_bg.js",
+    "picalculation.d.ts"
+  ],
+  "main": "picalculation.js",
+  "types": "picalculation.d.ts",
+  "sideEffects": [
+    "./picalculation.js",
+    "./snippets/*"
+  ]
+}
