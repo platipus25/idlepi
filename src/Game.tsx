@@ -1,5 +1,5 @@
 import { Component, createSignal, createMemo, For, Show, createEffect } from 'solid-js';
-import { createStore } from 'solid-js/store';
+import { createStore, produce } from 'solid-js/store';
 import { Motion, createMotion } from 'solid-motionone';
 import "./Game.css"
 import UpgradesPanel from './UpgradesPanel';
@@ -36,10 +36,10 @@ const Game: Component = () => {
         let start = digitTimingFilter.at(0)
         let slope = 0;
         if (start !== undefined && end !== undefined) {
-            console.log(start, end)
+            //console.log(start, end)
             slope = (start[1] - end[1]) / (start[0] - end[0]) || 0
         }
-        console.log(digitTimingFilter.length)
+        //console.log(digitTimingFilter.length)
         setState({digitRate: slope, numDigits: state.digits.length})
     })
     
@@ -100,6 +100,14 @@ const Game: Component = () => {
             <button onclick={() => digitsBatched(10)}>+10</button>
 
             <Ticker tick={() => digitsBatched(11)}></Ticker>
+
+            <button onclick={() => {
+                setState("upgrades", 
+                    (upgrade) => true,
+                    produce((upgrade) => {
+                    upgrade.active = true;
+                }))
+            }}>Unlock all</button>
 
             <NumberInput addDigit={addDigit} />
         </div>
