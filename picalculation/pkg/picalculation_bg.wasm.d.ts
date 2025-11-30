@@ -8,7 +8,7 @@ export const ramanujan_series_digits: (a: number, b: bigint) => [number, number]
 export const __wbg_ramanujanseries_free: (a: number, b: number) => void;
 export const __wbg_gosperseries_free: (a: number, b: number) => void;
 export const get_gosper_series: () => number;
-export const gosper_stream: (a: number) => [number, number];
+export const gosper_stream: (a: number, b: number) => [number, number];
 export const __wbindgen_externrefs: WebAssembly.Table;
 export const __wbindgen_free: (a: number, b: number, c: number) => void;
 export const __wbindgen_start: () => void;

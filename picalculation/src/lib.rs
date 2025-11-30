@@ -171,9 +171,9 @@ pub fn get_gosper_series() -> GosperSeries {
 }
 
 #[wasm_bindgen]
-pub fn gosper_stream(series: &mut GosperSeries) -> Vec<u8> {
+pub fn gosper_stream(series: &mut GosperSeries, num_digits: u32) -> Vec<u8> {
     let mut digits = Vec::new();
-    for _ in 0..100 {
+    for _ in 0..num_digits {
         digits.push(
             series
                 .0

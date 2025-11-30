@@ -16,9 +16,10 @@ const SpigotAlgorithm: Component<SpigotProps> = (props) => {
     let series = get_gosper_series();
     let digits: number[] = []
 
-    const doCalculation = () => {
-        setNumDigits((x) => x+1);
-        digits = digits.concat(Array.from(gosper_stream(series)))
+    const doCalculation = (num: number) => {
+        let calculatedDigits = Array.from(gosper_stream(series, num));
+        setNumDigits((x) => x+ calculatedDigits.length);
+        digits = digits.concat(calculatedDigits);
         props.addDigits(digits, numDigits())
         //setNumDigits(result.length)
         //props.addDigits(Array.from(result), 0)
@@ -35,8 +36,8 @@ const SpigotAlgorithm: Component<SpigotProps> = (props) => {
 
             <span>{numDigits()}</span>
             <div class="flex flex-row justify-between items-center">
-                <Ticker tick={doCalculation}></Ticker>
-                <button class="btn" onclick={doCalculation}>Do it</button>
+                <Ticker tick={() => doCalculation(100)}></Ticker>
+                <button class="btn" onclick={() => doCalculation(100)}>+100</button>
             </div>
         </div>
     )

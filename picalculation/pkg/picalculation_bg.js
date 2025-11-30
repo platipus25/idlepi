@@ -93,11 +93,12 @@ export function get_gosper_series() {
 
 /**
  * @param {GosperSeries} series
+ * @param {number} num_digits
  * @returns {Uint8Array}
  */
-export function gosper_stream(series) {
+export function gosper_stream(series, num_digits) {
     _assertClass(series, GosperSeries);
-    const ret = wasm.gosper_stream(series.__wbg_ptr);
+    const ret = wasm.gosper_stream(series.__wbg_ptr, num_digits);
     var v1 = getArrayU8FromWasm0(ret[0], ret[1]).slice();
     wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
     return v1;
