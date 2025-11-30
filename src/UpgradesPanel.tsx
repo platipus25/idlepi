@@ -32,15 +32,15 @@ const UpgradesPanel: Component<UpgradesPanelProps> = (props) => {
     setUpgrades([
         {
             name: "Regular Polygon Bisection",
-            cost: 20,
+            cost: 10,
             unlocked() { return props.numDigits >= 5 },
             active: false,
             component: () => <>Regular Polygon Bisection</>,
         },
         {
             name: "Monte Carlo Method",
-            cost: 5,
-            unlocked() { return this.cost <= props.numDigits },
+            cost: 2,
+            unlocked() { return props.numDigits >= 0 },
             active: false,
             component: MonteCarlo,
         },
@@ -60,7 +60,7 @@ const UpgradesPanel: Component<UpgradesPanelProps> = (props) => {
         },
         {
             name: "Gosper's Series with Spigot Algorithm",
-            cost: 10_000,
+            cost: 1_000,
             unlocked() {
                 return props.numDigits >= 1000
             },
@@ -100,7 +100,7 @@ const UpgradesPanel: Component<UpgradesPanelProps> = (props) => {
                 {
                     (upgrade, index) => 
                     <button class="p-2 bg-gray-200 disabled:bg-gray-300 active:bg-gray-300 flex flex-row justify-between gap-2 items-center" 
-                    disabled={!(upgrade().unlocked() && props.numDigits > upgrade().cost)}
+                    disabled={!(upgrade().unlocked() && props.numDigits >= upgrade().cost)}
                     onclick={() => {
                         if (props.numDigits >= upgrade().cost) {
                             setUpgrades(index, {active: true})
