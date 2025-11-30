@@ -15,15 +15,20 @@ const MonteCarlo: Component<MonteCarloProps> = (props) => {
     let canvasElement!: HTMLCanvasElement;
 
     onMount(() => {
+        clearCanvas()
+    })
+
+    const clearCanvas = () => {
         const ctx = canvasElement.getContext("2d");
         if (ctx === null) {
             return;
         }
+        ctx.clearRect(0, 0, canvasElement.width, canvasElement.height)
         ctx.beginPath();
         ctx.arc(0, 100, 100, 0, 90, true)
         ctx.stroke()
         ctx.beginPath()
-    })
+    }
 
     const tick = () => {
         for (let i = 0; i < 1_000_000; i ++) {
@@ -54,7 +59,10 @@ const MonteCarlo: Component<MonteCarloProps> = (props) => {
             <span class="self-center">{approx().toFixed(10)}</span>
             <div class="flex flex-row justify-between items-center">
                 <Ticker tick={tick}></Ticker>
-                <button class="btn" onclick={() => setSim(new CircleSimulation())}>Reset</button>
+                <button class="btn" onclick={() => {
+                    setSim(new CircleSimulation())
+                    clearCanvas()
+                }}>Reset</button>
             </div>
         </div>
     )
