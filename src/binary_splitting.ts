@@ -1,13 +1,15 @@
-import { memo } from "solid-js/web";
-import { sqrt_newtons_method, rational_to_decimal } from "./series_expansions";
+import { sqrt_newtons_method } from "./series_expansions";
 
+interface MemoizationDict {
+    [index: `${number},${number}`]: [bigint, bigint, bigint, bigint]
+}
 
 type SeriesTerms = {
     a: (k: number)=>bigint, 
     b: (k:number)=>bigint, 
     p: (j: number)=>bigint,
     q: (j: number)=>bigint,
-    memoization: {[index: `${number},${number}`]: [bigint, bigint, bigint, bigint]},
+    memoization: MemoizationDict,
 }
 
 // Evaluates \sum_{k=1}^n a(k)/b(k) \prod_{j=1}^k p(j)/q(j)
@@ -26,7 +28,6 @@ function sum_abpq_memoized(n1: number, n2: number, terms: SeriesTerms) {
     }
     val = sum_abpq(n1, n2, terms)
     if (n2 - n1 > 1000) {
-        console.log(n2, n1)
         terms.memoization[`${n1},${n2}`] = val
     }
     return val
@@ -88,7 +89,7 @@ function sum_abpq(n1: number, n2: number, terms: SeriesTerms): [bigint, bigint, 
 // }
 // console.log(sum_abpq_iterative(4, {a: _ => 0n, b: _ => 0n, p: n => BigInt(n), q: _ => 0n}))
 
-function chudnovsky_series(num_chudnovsky_terms: number, num_newtons_method_terms: number, memoization: {}): Generator<bigint> {
+function chudnovsky_series(num_chudnovsky_terms: number, num_newtons_method_terms: number, memoization: MemoizationDict): [bigint, bigint] {
     const A = 13591409n;
     const B = 545140134n;
     const C = 640320n;
@@ -121,9 +122,28 @@ function chudnovsky_series(num_chudnovsky_terms: number, num_newtons_method_term
 
     console.log(n2.toString(2).length / 8, d2.toString(2).length / 8)
 
-    return rational_to_decimal(n2, d2)
+    return [n2, d2];
 }
 
 //console.log(chudnovsky_series(50, 15).take(100).toArray())
 
-export { chudnovsky_series };
+function leibniz_formula(num_terms: number, memoization: MemoizationDict): [bigint, bigint] {
+    const arctan_terms: SeriesTerms = {
+        a: _ => 1n,
+        b: n => 2n * BigInt(n) + 1n,
+        p: n => n === 0? 1n: -1n,
+        q: _ => 1n,
+        memoization,
+    }
+
+    const [n, d] = binary_splitting_algorithm(num_terms, arctan_terms);
+    //console.log(n, d)
+    
+    return [4n * n, d];
+}
+
+//let mem = {}
+//console.log(rational_to_decimal(...leibniz_formula(60_000, mem)).take(10).toArray());
+
+export { chudnovsky_series, leibniz_formula };
+export type { MemoizationDict };

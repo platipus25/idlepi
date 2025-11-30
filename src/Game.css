@@ -16,7 +16,7 @@
 }
 
 .btn {
-  @apply p-1 bg-gray-200 active:bg-gray-300 rounded
+  @apply p-1 bg-gray-200 active:bg-gray-300 disabled:bg-gray-300 rounded
 }
 
 @theme {

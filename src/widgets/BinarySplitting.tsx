@@ -5,6 +5,7 @@ import { chudnovsky_series } from '../binary_splitting';
 import Ticker from "../Ticker";
 import katex from 'katex';
 import 'katex/dist/katex.css'
+import { rational_to_decimal } from "../series_expansions";
 
 
 type BinarySplittingProps = {
@@ -13,7 +14,7 @@ type BinarySplittingProps = {
 }
 
 const BinarySplitting: Component<BinarySplittingProps> = (props) => {
-    let [numDigits, setNumDigits] = createSignal(90_000);
+    let [numDigits, setNumDigits] = createSignal(1);
     let [calculating, setCalculating] = createSignal(false);
     let memoization = {}
 
@@ -24,15 +25,18 @@ const BinarySplitting: Component<BinarySplittingProps> = (props) => {
             console.log("Nope!")
             return;
         }
+
+        setNumDigits((i) => increment * i)
         setCalculating(true);
         console.log("Starting")
-        let digits = chudnovsky_series(numDigits(), 10, memoization);
-        console.log(digits.take(10).toArray())
+        let [numerator, denominator] = chudnovsky_series(numDigits(), 10, memoization);
+        let generator = rational_to_decimal(numerator, denominator);
+        let digits = generator.take(10).toArray()
+        console.log(digits)
         console.log(memoization)
         //console.log(chudnovsky_series(90000, 10).take(10).toArray())
 
         setCalculating(false);
-        setNumDigits((i) => 2*i)
         //props.addDigits(Array.from(result), 0)
     }
 
@@ -45,8 +49,8 @@ const BinarySplitting: Component<BinarySplittingProps> = (props) => {
             <span>{calculating()? "Calculating": ""}</span>
             <span>{numDigits()}</span>
             <div class="flex flex-row justify-between items-center">
-                <Ticker tick={() => doCalculation(111)}></Ticker>
-                <button class="btn" onclick={() => doCalculation(100)}>+100</button>
+                <Ticker tick={() => doCalculation(1000)}></Ticker>
+                <button class="btn" onclick={() => doCalculation(2)}>x2</button>
             </div>
         </div>
     )

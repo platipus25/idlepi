@@ -25,7 +25,7 @@ function gcd(a: bigint, b: bigint): bigint {
 
 function reduce(num: bigint, denom: bigint): [bigint, bigint] {
     const d = gcd(num, denom);
-    //console.log(d, num, denom)
+    console.log(d, num, denom)
     if (d < num && d < denom) {
         num /= d;
         denom /= d;
@@ -111,7 +111,7 @@ function *rational_to_decimal(numerator: bigint, denominator: bigint) {
         numerator *= 10n;
         numerator -= digit * denominator * 10n;
 
-        yield digit;
+        yield Number(digit);
     }
 }
 
@@ -130,4 +130,4 @@ for (let i = 1; i < 10; i++) {
     console.log(rational_to_decimal(a, b).take(i * 100).toArray())
 }*/
 
-export { sqrt_newtons_method, rational_to_decimal };
+export { sqrt_newtons_method, rational_to_decimal, reduce };

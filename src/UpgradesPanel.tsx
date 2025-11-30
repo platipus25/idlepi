@@ -4,6 +4,7 @@ import MonteCarlo from './widgets/MonteCarlo';
 import RamanujanSeries from './widgets/RamanujanSeries';
 import SpigotAlgorithm from './widgets/SpigotAlgorithm';
 import BinarySplitting from './widgets/BinarySplitting';
+import LeibnizFormula from './widgets/LeibnizFormula';
 
 type WidgetProps = {
     addDigits: (newDigits: number[], startIndex: number) => void,
@@ -45,10 +46,10 @@ const UpgradesPanel: Component<UpgradesPanelProps> = (props) => {
         },
         {
             name: "Leibniz formula",
-            cost: 10,
-            unlocked() { return this.cost <= props.numDigits },
+            cost: 5,
+            unlocked() { return props.numDigits >= 5 },
             active: false,
-            component: () => <></>,
+            component: LeibnizFormula,
         },
         {
             name: "Other Method?",
