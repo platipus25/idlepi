@@ -20,7 +20,7 @@ const SpigotAlgorithm: Component<SpigotProps> = (props) => {
         let calculatedDigits = Array.from(gosper_stream(series, num));
         setNumDigits((x) => x+ calculatedDigits.length);
         digits = digits.concat(calculatedDigits);
-        props.addDigits(digits, numDigits())
+        props.addDigits(digits, 0)
         //setNumDigits(result.length)
         //props.addDigits(Array.from(result), 0)
     }
