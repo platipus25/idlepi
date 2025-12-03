@@ -115,6 +115,15 @@ function *rational_to_decimal(numerator: bigint, denominator: bigint) {
     }
 }
 
+function skip_digits(numerator: bigint, denominator: bigint, skip: number): [bigint, bigint] {
+    numerator *= 10n ** BigInt(skip)
+
+    let val = numerator/denominator;
+    numerator -= val * denominator;
+
+    return [numerator, denominator]
+}
+
 //console.log(sqrt_newtons_method(4n, 5))
 
 /*
@@ -130,4 +139,4 @@ for (let i = 1; i < 10; i++) {
     console.log(rational_to_decimal(a, b).take(i * 100).toArray())
 }*/
 
-export { sqrt_newtons_method, rational_to_decimal, reduce };
+export { sqrt_newtons_method, rational_to_decimal, reduce, skip_digits };
