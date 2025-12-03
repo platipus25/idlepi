@@ -1,5 +1,11 @@
 import { sqrt_newtons_method } from "./series_expansions";
 
+enum Formula {
+    LeibnizFormula,
+    RamanujanFormula,
+    ChudnovskyFormula,
+}
+
 interface MemoizationDict {
     [index: `${number},${number}`]: [bigint, bigint, bigint, bigint]
 }
@@ -145,5 +151,5 @@ function leibniz_formula(num_terms: number, memoization: MemoizationDict): [bigi
 //let mem = {}
 //console.log(rational_to_decimal(...leibniz_formula(60_000, mem)).take(10).toArray());
 
-export { chudnovsky_series, leibniz_formula };
+export { chudnovsky_series, leibniz_formula, Formula };
 export type { MemoizationDict };

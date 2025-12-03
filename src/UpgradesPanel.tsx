@@ -3,7 +3,7 @@ import { createStore } from 'solid-js/store';
 import MonteCarlo from './widgets/MonteCarlo';
 import RamanujanSeries from './widgets/RamanujanSeries';
 import SpigotAlgorithm from './widgets/SpigotAlgorithm';
-import BinarySplitting from './widgets/BinarySplitting';
+import ChudnovskyFormula from './widgets/ChudnovskyFormula';
 import LeibnizFormula from './widgets/LeibnizFormula';
 
 type WidgetProps = {
@@ -69,21 +69,21 @@ const UpgradesPanel: Component<UpgradesPanelProps> = (props) => {
         },
         {
             name: "Ramanujan Series",
-            cost: 50_000,
+            cost: 100,
             unlocked() {
-                return props.numDigits >= 10_000
+                return props.numDigits >= 50
             },
             active: false,
             component: RamanujanSeries,
         },
         {
-            name: "Binary Splitting Chudnovsky Series",
-            cost: 50_000,
+            name: "Chudnovsky Series – Binary Splitting",
+            cost: 200,
             unlocked() {
-                return props.numDigits >= 10_000
+                return props.numDigits >= 50
             },
             active: false,
-            component: BinarySplitting,
+            component: ChudnovskyFormula,
         }
     ]))
 
@@ -108,7 +108,7 @@ const UpgradesPanel: Component<UpgradesPanelProps> = (props) => {
                     }}
                     >
                     <span>{upgrade().name}</span>
-                    <div class="p-1 bg-sky-300 rounded" classList={{}}>
+                    <div class="p-1 bg-sky-300 rounded text-nowrap" classList={{}}>
                         <Switch fallback={"???"}>
                             <Match when={upgrade().active}>
                                 Active
